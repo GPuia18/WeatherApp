@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./appStyle.css">
+    <title>Weathery</title>
+</head>
+<body>
+    <!--<button onclick="getCurrent()">Get coord</button>-->
+
+        <input type="text" id="search-input"  oninput="getRecom()" autocomplete="off" placeholder="Search...">
+        <div class="toggle" id="toggle" onclick="changeDegrees()">
+            °F
+        </div>
+    
+    <div class="weather" id="weather">
+        <div class="icon" id="icon">
+
+        </div>
+        <div class="city" id="city">
+
+        </div>
+        <div class="hour-forecast" id="hour-forecast">
+            <div class="four-hours" id="1"></div>
+            <div class="four-hours" id="2"></div>
+            <div class="four-hours" id="3"></div>
+            <div class="four-hours" id="4"></div>
+            <div class="four-hours" id="5"></div>
+            <div class="four-hours" id="6"></div>
+        </div>
+    </div>
+
+    <div class="info">
+        <div class="day-info" id="day-info">
+            <div class="humidity" id="humidity">
+                <p style="font-size: 15px; font-weight: 600;">Humidity</p>
+                <img src="./img/humidity.svg" alt="humidity" class="medium-icon">
+                <span id="hum"></span>
+            </div>
+            <div class="wind" id="wind">
+                <p style="font-size: 15px; font-weight: 600;">Wind</p>
+                <img src="./img/wind.svg" alt="wind" class="medium-icon">
+                <span id="win"></span>
+            </div>
+            <div class="uv" id="uv">
+                <p style="font-size: 15px; font-weight: 600;">UV</p>
+                <img src="./img/uv.svg" alt="uv" class="medium-icon">
+                <span id="u"></span>
+            </div>
+        </div>
+        <div class="general-info" id="general-info">
+
+        </div>
+        <div class="week-forecast" id="week-forecast">
+
+        </div>
+    </div>
+
+    <div class="recom-list" id="recom-list" onclick="loseFocus()">
+
+    </div>
+</body>
+<script>
+    let inp="";
+    let lat=51.52;
+    let long=-0.11;
+    let currCond;
+    let degree=1;
+    let nameC;
+    let mindex=0;
+
+    function setColor(localHour)
+    {
+        document.querySelector('input').className='';
+        document.querySelector('*').className='';
+        if((localHour>=20)||(localHour<=6))
+        {
+            document.querySelector('*').classList.add("white");
+            document.querySelector('input').classList.add("white","input-color-white");
+            document.querySelector('input').style.borderColor="rgba(255,255,255,.7)";
+            document.getElementById('weather').style.backgroundColor="var(--forecast-black)";
+            document.getElementById('week-forecast').style.backgroundColor="var(--forecast-black)";
+            document.getElementById('day-info').style.backgroundColor="var(--forecast-black)";
+            document.getElementById('general-info').style.backgroundColor="var(--forecast-black)";
+        }
+        else {
+            document.querySelector('input').classList.add("input-color-black");
+            document.querySelector('input').style.borderColor="rgba(0,0,0,.5)";
+            document.getElementById('weather').style.backgroundColor="var(--forecast-white)";
+            document.getElementById('week-forecast').style.backgroundColor="var(--forecast-white)";
+            document.getElementById('day-info').style.backgroundColor="var(--forecast-white)";
+            document.getElementById('general-info').style.backgroundColor="var(--forecast-white)";
+        }
+    }
+
+    function getLocation()
+    {
+        if (navigator.geolocation)
+        {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
+    }
+
+    function showPosition(position)
+    {
+        if(position){
+            lat=position.coords.latitude;
+            console.log(lat);
+            long=position.coords.longitude;  
+            console.log(long);
+        }
+    }
+
+    function changeDegrees()
+    {
+        degree++;
+        if(degree%2==1){
+            document.getElementById("toggle").innerHTML="°F";
+            setTimeout(showCity(nameC,1),300);
+        }else{
+            document.getElementById("toggle").innerHTML="°C";
+            setTimeout(showCity(nameC,2),300);
+        }
+    }
+
+    function chooseCurrCond(currCond,h){
+        if(currCond=="Overcast")
+            {   
+                if(h<21&&h>6){
+                    document.querySelector('body').classList.add("overcast");
+                }else {
+                    document.querySelector('body').classList.add("clear");
+                }
+                document.getElementById('icon').innerHTML = '<img src="./img/overcast.svg" alt="overcast">';
+            }else if(currCond=="Sunny"){
+                if(h<18&&h>6)document.querySelector('body').classList.add("sunny");
+                else document.querySelector('body').classList.add("sunset");
+                document.getElementById('icon').innerHTML = '<img src="./img/sun.svg" alt="sunny">';
+            }else if(currCond=="Partly cloudy"){
+                if(h<21&&h>6){
+                    document.querySelector('body').classList.add("partially_cloudy");
+                    document.getElementById('icon').innerHTML = '<img src="./img/partially_cloudy.svg" alt="part_cloudy">';
+                }else {
+                    document.querySelector('body').classList.add("clear");
+                    document.getElementById('icon').innerHTML = '<img src="./img/cloudy_night_2.svg" alt="part_cloudy_night">';
+                }
+            }else if(currCond=="Clear"){
+                if(h<21&&h>6){
+                    if(h<18&&h>6)document.querySelector('body').classList.add("sunny");
+                    else document.querySelector('body').classList.add("sunset");
+                    document.getElementById('icon').innerHTML = '<img src="./img/sun.svg" alt="sunny">';
+                }else{
+                    document.querySelector('body').classList.add("clear");
+                    document.getElementById('icon').innerHTML = '<img src="./img/moon2.svg" alt="moon">';
+                }
+            }else if(currCond=="Light rain"){
+                document.querySelector('body').classList.add("light_rain");
+                document.getElementById('icon').innerHTML = '<img src="./img/light_rain.svg" alt="light_rain">';
+            }else if(currCond=="Heavy rain"||currCond=="Moderate rain"){
+                document.querySelector('body').classList.add("heavy_rain");
+                document.getElementById('icon').innerHTML = '<img src="./img/heavy_rain.svg" alt="heavy_rain">';
+            }else if(currCond=="Mist"){
+                if(h<21&&h>6){
+                    document.querySelector('body').classList.add("mist");
+                }
+                else{
+                    document.querySelector('body').classList.add("mist_night");
+                }
+                document.getElementById('icon').innerHTML = '<img src="./img/mist.svg" alt="mist">';
+            }else if(currCond.includes("rain")==1||currCond.includes("Rain")==1){
+                document.querySelector('body').classList.add("light_rain");
+                document.getElementById('icon').innerHTML = '<img src="./img/light_rain.svg" alt="light_rain">';
+            }else if(currCond.includes("snow")==1||currCond.includes("Snow")==1){
+                document.querySelector('body').classList.add("light_rain");
+                document.getElementById('icon').innerHTML = '<img src="./img/snow.svg" alt="snow">';
+            }else{
+                document.querySelector('body').classList.add("sunset");
+                document.getElementById('icon').innerHTML = '<img src="./img/sun.svg" alt="sunny">';
+            }
+    }
+
+    function getCondHour(currCond,h)
+    {
+        if(currCond=="Overcast")
+            {  
+                return "<img src='./img/overcast.svg' alt='overcast' class='small-icon'>";
+            }else if(currCond=="Sunny"){
+                return "<img src='./img/sun.svg' alt='sunny' class='small-icon'>";
+            }else if(currCond=="Partly cloudy"){
+                if(h<21&&h>6)return "<img src='./img/partially_cloudy.svg' alt='part_cloudy' class='small-icon'>";
+                else return "<img src='./img/cloudy_night_2.svg' alt='part_cloudy_night' class='small-icon'>";
+            }else if(currCond=="Clear"){
+                if(h<21&&h>6)return "<img src='./img/sun.svg' alt='sunny' class='small-icon'>";
+                else return "<img src='./img/moon2.svg' alt='moon' class='small-icon'>";
+            }else if(currCond=="Light rain"){
+                return "<img src='./img/light_rain.svg' alt='light_rain' class='small-icon'>";
+            }else if(currCond=="Heavy rain"||currCond=="Moderate rain"){
+                return "<img src='./img/heavy_rain.svg' alt='heavy_rain' class='small-icon'>";
+            }else if(currCond=="Mist"){
+                return "<img src='./img/mist.svg' alt='mist' class='small-icon'>";
+            }else if(currCond.includes("rain")==1||currCond.includes("Rain")==1){
+                return "<img src='./img/light_rain.svg' alt='light_rain' class='small-icon'>";
+            }else if(currCond.includes("snow")==1||currCond.includes("Snow")==1){
+                return "<img src='./img/snow.svg' alt='snow' class='small-icon'>";
+            }else{
+                return "<img src='./img/sun.svg' alt='sunny' class='small-icon'>";
+            }
+    }
+
+    getLocation();
+    setTimeout(getCurrWeather,300);
+    function getCurrWeather(){
+        fetch("http://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+lat+","+long+"&days=6&aqi=no&alerts=no")
+        .then(function (response){
+            return response.json();
+        })
+        .then(function (data){
+
+            currCond=data.current.condition.text;
+            let currtime = data.location.localtime;
+            let time =currtime.split(" ");
+            //console.log(time[1]);
+            let hour = time[1].split(":");
+            let h = parseInt(hour[0])+1;
+
+            chooseCurrCond(currCond,h);
+            setColor(h-1);
+            nameC=data.location.name;
+
+            //console.log(data);
+            let name="";
+            let hourCounter=0;
+            document.getElementById('city').innerHTML="<h1>"+data.current.temp_c+"°C"+"</h1><h2>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_c+" / "+data.forecast.forecastday[0].day.mintemp_c+"°C"+"</h4>";
+            let fo;
+            let id=1;
+            let fd = document.getElementById("hour-forecast"); 
+            for(let i=1;i<=6;i++)
+            {
+                document.getElementById(""+i).innerHTML="";
+            }
+            for(let i=0;i<24;i++)
+            {   
+                id=Math.ceil((i+1)/4);
+                //console.log(id);
+                if(h<24){
+                    fo=data.forecast.forecastday[0].hour[h];
+                    document.getElementById(""+id).innerHTML += "<span class='hour'><span>"+h+":00</span>"+getCondHour(fo.condition.text,h)+"<span>"+fo.temp_c+"°C</span></span>";
+                    h++;
+                }
+                else{
+                    fo=data.forecast.forecastday[1].hour[h-24];
+                    document.getElementById(""+id).innerHTML += "<span class='hour'><span>"+(h-24)+":00</span>"+getCondHour(fo.condition.text,h-24)+"<span>"+fo.temp_c+"°C</span></span>";
+                    h++;
+                }
+            }
+
+            const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            fo=data.forecast;
+
+            let raining = parseInt(fo.forecastday[0].day.daily_chance_of_rain);
+            let snowing = parseInt(fo.forecastday[0].day.daily_chance_of_snow);
+            console.log(raining);
+            let uvi = fo.forecastday[0].day.uv;
+            document.getElementById("general-info").innerHTML="";
+            if(raining>=40){
+                mindex++;
+                if(mindex==1)document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 100%'>It can rain today. You may want to take your umbrella with you.</p>";
+                else document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 0%'>It can rain today. You may want to take your umbrella with you.</p>";
+            }
+            if(snowing>=40){
+                mindex++;
+                if(mindex==1)document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 100%'>It can snow. You may want to stay inside today and grab a hot chocolate.</p>";
+                else document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 0%'>It can snow. You may want to stay inside today and grab a hot chocolate.</p>";
+            }
+            if(uvi>=5){
+                mindex++;
+                if(mindex==1)document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 100%'>The sun is pretty strong. We recommend applying some SPF cream.</p>";
+                else document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 0%'>The sun is pretty strong. We recommend applying some SPF cream.</p>";
+            }
+            if(mindex>1)r=1;
+            else if(mindex==0){
+                document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 100%'>Today is a nice day. Going for a walk would be ideal.</p>";
+            }
+            document.getElementById('hum').innerHTML=fo.forecastday[0].day.avghumidity+"%";
+            document.getElementById('win').innerHTML=data.current.wind_kph+"km/h";
+            document.getElementById('u').innerHTML=uvi;
+
+            if(uvi<=2)document.getElementById('u').style="border-bottom:2px solid rgba(0,255,0,.5);";
+            else if(uvi<=5)document.getElementById('u').style="border-bottom:2px solid rgba(255,255,0,.9);";
+            else if(uvi<=7)document.getElementById('u').style="border-bottom:2px solid rgba(255,205,0,.9);";
+            else if(uvi<=10)document.getElementById('u').style="border-bottom:2px solid rgba(255,0,0,.7);";
+            else document.getElementById('u').style="border-bottom:2px solid rgba(255,0,255,.5);";
+            
+            for(let i=1;i<=5;i++)
+            {
+                let date = new Date(fo.forecastday[i].date);
+                let day = date.getDay();
+                document.getElementById("week-forecast").innerHTML+="<p class='day-forecast'><span class='day-name'>"+weekday[day]+"</span><span class='day-icon'>"+getCondHour(fo.forecastday[i].day.condition.text,12)+"</span><span class='day-temp'>"+fo.forecastday[i].day.maxtemp_c+" / "+fo.forecastday[i].day.mintemp_c+"°C"+"</span></p>";
+            }
+            //console.log(data.forecast.forecastday[1].hour[1]);
+        })
+
+        
+    }
+    
+    function getRecom()
+    {
+        inp=document.querySelector('input').value;
+        //console.log(inp);
+        if(document.querySelector('input').value!="")document.getElementById("recom-list").style.display="flex";
+        else document.getElementById("recom-list").style.display="none";
+        if(inp!=""){
+            fetch("http://api.weatherapi.com/v1/search.json?key=d3d2af912cd24616b68200305230704&q="+inp)
+            .then(function (response){
+                return response.json();
+            })
+            .then(function (data){
+                let str = "";
+                let list = document.getElementById("recom-list");
+                list.innerHTML="";
+                data.forEach(city => {
+                    if(city.region){
+                        list.innerHTML = list.innerHTML + '<button class="recom-city" onclick="showCity(\''+city.name+'\','+degree%2+')">'+city.name+", "+city.region+", "+city.country+'</button>';
+                        
+                    }
+                    else list.innerHTML = list.innerHTML + '<button class="recom-city" onclick="showCity(\''+city.name+'\','+degree%2+')">'+city.name+", "+city.country+'</button>';
+                });;
+            })
+        }
+    }
+
+    function showCity(cityName,ind)
+    {
+            nameC=cityName;
+            document.querySelector('input').value='';
+            document.getElementById("recom-list").style.display="none";
+            document.getElementById("recom-list").innerHTML="";
+            fetch("http://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+cityName+"&days=6&aqi=no&alerts=no")
+            .then(function (response){
+                return response.json();
+            })
+            .then(function (data){
+            //console.log(data);
+            let name="";
+            let hourCounter=0;
+            if(ind==1)document.getElementById('city').innerHTML="<h1>"+data.current.temp_c+"°C"+"</h1><h2>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_c+" / "+data.forecast.forecastday[0].day.mintemp_c+"°C"+"</h4>";
+            else document.getElementById('city').innerHTML="<h1>"+data.current.temp_f+"°F"+"</h1><h2>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_f+" / "+data.forecast.forecastday[0].day.mintemp_f+"°F"+"</h4>"; 
+            currCond=data.current.condition.text;
+            let currtime = data.location.localtime;
+            let time =currtime.split(" ");
+            //console.log(time[1]);
+            let hour = time[1].split(":");
+            let h = parseInt(hour[0])+1;
+            document.querySelector('body').className='';
+
+            chooseCurrCond(currCond,h);
+            setColor(h-1);
+
+            let fo;
+            let id=1;
+            let fd = document.getElementById("hour-forecast"); 
+            for(let i=1;i<=6;i++)
+            {
+                document.getElementById(""+i).innerHTML="";
+            }
+            for(let i=0;i<24;i++)
+            {   
+                id=Math.ceil((i+1)/4);
+                //console.log(id);
+                if(h<24){
+                    fo=data.forecast.forecastday[0].hour[h];
+                    if(ind==1)document.getElementById(""+id).innerHTML += "<span class='hour'><span>"+h+":00</span>"+getCondHour(fo.condition.text,h)+"<span>"+fo.temp_c+"°C</span></span>";
+                    else document.getElementById(""+id).innerHTML += "<span class='hour'><span>"+h+":00</span>"+getCondHour(fo.condition.text,h)+"<span>"+fo.temp_f+"°F</span></span>";
+                    h++;
+                }
+                else{
+                    fo=data.forecast.forecastday[1].hour[h-24];
+                    if(ind==1)document.getElementById(""+id).innerHTML += "<span class='hour'><span>"+(h-24)+":00</span>"+getCondHour(fo.condition.text,h-24)+"<span>"+fo.temp_c+"°C</span></span>";
+                    else document.getElementById(""+id).innerHTML += "<span class='hour'><span>"+(h-24)+":00</span>"+getCondHour(fo.condition.text,h-24)+"<span>"+fo.temp_f+"°F</span></span>";
+                    h++;
+                }
+            }
+
+            const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            fo=data.forecast;
+            let raining = parseInt(fo.forecastday[0].day.daily_chance_of_rain);
+            let snowing = parseInt(fo.forecastday[0].day.daily_chance_of_snow);
+            let uvi = fo.forecastday[0].day.uv;
+            mindex=0;
+            console.log(raining);
+            document.getElementById("general-info").innerHTML="";
+            if(raining>=40){
+                mindex++;
+                if(mindex==1)document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 100%'>It can rain today. You may want to take your umbrella with you.</p>";
+                else document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 0%'>It can rain today. You may want to take your umbrella with you.</p>";
+            }
+            if(snowing>=40){
+                mindex++;
+                if(mindex==1)document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 100%'>It can snow. You may want to stay inside today and grab a hot chocolate.</p>";
+                else document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 0%'>It can snow. You may want to stay inside today and grab a hot chocolate.</p>";
+            }
+            if(uvi>=5){
+                mindex++;
+                if(mindex==1)document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 100%'>The sun is pretty strong. We recommend applying some SPF cream.</p>";
+                else document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 0%'>The sun is pretty strong. We recommend applying some SPF cream.</p>";
+            }
+            if(mindex>1)r=1;
+            else if(mindex==0){
+                document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 100%'>Today is a nice day. Going for a walk would be ideal.</p>";
+            }
+            document.getElementById('hum').innerHTML=fo.forecastday[0].day.avghumidity+"%";
+            if(ind==1)document.getElementById('win').innerHTML=data.current.wind_kph+"km/h";
+            else document.getElementById('win').innerHTML=data.current.wind_mph+"m/h";
+            document.getElementById('u').innerHTML=uvi;
+            
+            if(uvi<=2)document.getElementById('u').style="border-bottom:2px solid rgba(0,255,0,.5);";
+            else if(uvi<=5)document.getElementById('u').style="border-bottom:2px solid rgba(255,255,0,.9);";
+            else if(uvi<=7)document.getElementById('u').style="border-bottom:2px solid rgba(255,205,0,.9);";
+            else if(uvi<=10)document.getElementById('u').style="border-bottom:2px solid rgba(255,0,0,.7);";
+            else document.getElementById('u').style="border-bottom:2px solid rgba(255,0,255,.5);";
+
+            document.getElementById('week-forecast').innerHTML='';
+            for(let i=1;i<=5;i++)
+            {
+                let date = new Date(fo.forecastday[i].date);
+                let day = date.getDay();
+                if(ind==1)document.getElementById("week-forecast").innerHTML+="<p class='day-forecast'><span class='day-name'>"+weekday[day]+"</span><span class='day-icon'>"+getCondHour(fo.forecastday[i].day.condition.text,12)+"</span><span class='day-temp'>"+fo.forecastday[i].day.maxtemp_c+" / "+fo.forecastday[i].day.mintemp_c+"°C"+"</span></p>";
+                else document.getElementById("week-forecast").innerHTML+="<p class='day-forecast'><span class='day-name'>"+weekday[day]+"</span><span class='day-icon'>"+getCondHour(fo.forecastday[i].day.condition.text,12)+"</span><span class='day-temp'>"+fo.forecastday[i].day.maxtemp_f+" / "+fo.forecastday[i].day.mintemp_f+"°F"+"</span></p>";
+            }
+
+            })
+    }
+
+    function loseFocus()
+    {
+        document.querySelector('input').value='';
+        document.getElementById("recom-list").style.display="none";
+    }
+
+    let r;
+    setInterval(function changeMessages(){
+        if(mindex>1){
+            r++;
+            if(r>mindex)r=1;
+            for(let i=1;i<=mindex;i++)
+            {
+                if(r!=i){
+                    document.getElementById("m"+i).style.opacity="0%";
+                }
+            }
+            document.getElementById("m"+r).style.opacity="100%";
+        }
+    },5000);
+</script>
+</html>
