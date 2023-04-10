@@ -212,7 +212,7 @@
     getLocation();
     setTimeout(getCurrWeather,300);
     function getCurrWeather(){
-        fetch("http://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+lat+","+long+"&days=6&aqi=no&alerts=no")
+        fetch("https://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+lat+","+long+"&days=6&aqi=no&alerts=no")
         .then(function (response){
             return response.json();
         })
@@ -292,7 +292,7 @@
             else if(uvi<=7)document.getElementById('u').style="border-bottom:2px solid rgba(255,205,0,.9);";
             else if(uvi<=10)document.getElementById('u').style="border-bottom:2px solid rgba(255,0,0,.7);";
             else document.getElementById('u').style="border-bottom:2px solid rgba(255,0,255,.5);";
-            
+
             for(let i=1;i<=5;i++)
             {
                 let date = new Date(fo.forecastday[i].date);
@@ -312,7 +312,7 @@
         if(document.querySelector('input').value!="")document.getElementById("recom-list").style.display="flex";
         else document.getElementById("recom-list").style.display="none";
         if(inp!=""){
-            fetch("http://api.weatherapi.com/v1/search.json?key=d3d2af912cd24616b68200305230704&q="+inp)
+            fetch("https://api.weatherapi.com/v1/search.json?key=d3d2af912cd24616b68200305230704&q="+inp)
             .then(function (response){
                 return response.json();
             })
@@ -337,7 +337,7 @@
             document.querySelector('input').value='';
             document.getElementById("recom-list").style.display="none";
             document.getElementById("recom-list").innerHTML="";
-            fetch("http://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+cityName+"&days=6&aqi=no&alerts=no")
+            fetch("https://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+cityName+"&days=6&aqi=no&alerts=no")
             .then(function (response){
                 return response.json();
             })
