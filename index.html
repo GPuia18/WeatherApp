@@ -210,7 +210,7 @@
     }
 
     getLocation();
-    setTimeout(getCurrWeather,300);
+    setTimeout(getCurrWeather,500);
     function getCurrWeather(){
         fetch("https://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+lat+","+long+"&days=6&aqi=no&alerts=no")
         .then(function (response){
