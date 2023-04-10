@@ -232,7 +232,7 @@
             //console.log(data);
             let name="";
             let hourCounter=0;
-            document.getElementById('city').innerHTML="<h1>"+data.current.temp_c+"°C"+"</h1><h2>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_c+" / "+data.forecast.forecastday[0].day.mintemp_c+"°C"+"</h4>";
+            document.getElementById('city').innerHTML="<h1>"+data.current.temp_c+"°C"+"</h1><h2 style='text-align:center;'>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_c+" / "+data.forecast.forecastday[0].day.mintemp_c+"°C"+"</h4>";
             let fo;
             let id=1;
             let fd = document.getElementById("hour-forecast"); 
@@ -345,8 +345,8 @@
             //console.log(data);
             let name="";
             let hourCounter=0;
-            if(ind==1)document.getElementById('city').innerHTML="<h1>"+data.current.temp_c+"°C"+"</h1><h2>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_c+" / "+data.forecast.forecastday[0].day.mintemp_c+"°C"+"</h4>";
-            else document.getElementById('city').innerHTML="<h1>"+data.current.temp_f+"°F"+"</h1><h2>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_f+" / "+data.forecast.forecastday[0].day.mintemp_f+"°F"+"</h4>"; 
+            if(ind==1)document.getElementById('city').innerHTML="<h1>"+data.current.temp_c+"°C"+"</h1><h2 style='text-align:center;'>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_c+" / "+data.forecast.forecastday[0].day.mintemp_c+"°C"+"</h4>";
+            else document.getElementById('city').innerHTML="<h1>"+data.current.temp_f+"°F"+"</h1><h2 style='text-align:center;'>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_f+" / "+data.forecast.forecastday[0].day.mintemp_f+"°F"+"</h4>"; 
             currCond=data.current.condition.text;
             let currtime = data.location.localtime;
             let time =currtime.split(" ");
