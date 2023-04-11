@@ -84,7 +84,7 @@
     let long=-0.11;
     let currCond;
     let degree=1;
-    let nameC;
+    let nameC="0";
     let mindex=0;
 
     function setColor(localHour)
@@ -255,6 +255,7 @@
             setColor(h-1);
 
             nameC=data.location.name;
+            //console.log(nameC);
             setFaveInitial(nameC);
             //console.log(data);
             let name="";
@@ -487,7 +488,7 @@
 
     function checkCookie(nameC) {
         let decodedCookie = decodeURIComponent(document.cookie);
-        console.log(decodedCookie);
+        //console.log(decodedCookie);
         let b = decodedCookie.split('; ');
         let d1;
         let ok=0;
@@ -497,7 +498,7 @@
                 //console.log(b1[0]);
                 let a = b1[1];
                 let d = b1[0];
-                console.log(a);
+                //console.log(a);
                 if(a==nameC){
                     //console.log(a[1]);
                     ok=1;
@@ -511,7 +512,7 @@
         return 1;
     }
 
-    let nr=1;
+    let nr=document.cookie.split('; ').length;
     //console.log(document.cookie);
     //let decodedCookie = decodeURIComponent(document.cookie);
     //console.log(decodedCookie);
@@ -521,7 +522,6 @@
             document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
         }
         else document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
-        nr=document.cookie.split('city').length;
         let decodedCookie = decodeURIComponent(document.cookie);
         console.log(decodedCookie);
         let b = decodedCookie.split('; ');
@@ -533,16 +533,13 @@
                 //console.log(b1[0]);
                 let a = b1[1];
                 let d = b1[0];
-                console.log(a);
-                if(a!="0"){
-                    //console.log(a[1]);
+                //console.log(a);
+                if(a!="0"&&a!=undefined){
+                    //console.log(a);
                     document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a+'\','+degree%2+')">'+a+'</p>';
                 }
-                else if(d1==d){
-                    return 0;
-                }
         }
-        if(ok==0)return 0;
+        console.log(document.cookie);
         return 1;
     }
     //document.cookie+=";expires=Tue, 7 Mar 2023 12:00:00 UTC";
@@ -566,7 +563,7 @@
                     //console.log(c);
                 }
                 else{
-                    if(a[1]!="0")document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a[1]+'\','+degree%2+')">'+a[1]+'</p>';
+                    if(a[1]!="0"&&a[1]!=undefined)document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a[1]+'\','+degree%2+')">'+a[1]+'</p>';
                 }
             }
             //c+=";expires=Tue, 7 May 2023 12:00:00 UTC";
