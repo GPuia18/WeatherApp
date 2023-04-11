@@ -10,12 +10,28 @@
 <body>
     <!--<button onclick="getCurrent()">Get coord</button>-->
 
+        <div class="fave-menu-icon" id="fave-menu-icon" onclick="showFaveMenu()">
+            <span id="l1"></span>
+            <span id="l2"></span>
+            <span id="l3"></span>
+        </div>
+
+        <div class="fave-menu" id="fave-menu">
+            <div class="fave-heading"><h2>Favorites</h2></div>
+            <div class="fave-citites" id="fave-cities">
+
+            </div>
+        </div>
+
         <input type="text" id="search-input"  oninput="getRecom()" autocomplete="off" placeholder="Search...">
         <div class="toggle" id="toggle" onclick="changeDegrees()">
             °F
-        </div>
+        </div>  
     
     <div class="weather" id="weather">
+        <div class="fave" id="fave" onclick="setFave()">
+            
+        </div>
         <div class="icon" id="icon">
 
         </div>
@@ -75,7 +91,7 @@
     {
         document.querySelector('input').className='';
         document.querySelector('*').className='';
-        if((localHour>=20)||(localHour<=6))
+        if((localHour>=20)||(localHour<6))
         {
             document.querySelector('*').classList.add("white");
             document.querySelector('input').classList.add("white","input-color-white");
@@ -84,6 +100,11 @@
             document.getElementById('week-forecast').style.backgroundColor="var(--forecast-black)";
             document.getElementById('day-info').style.backgroundColor="var(--forecast-black)";
             document.getElementById('general-info').style.backgroundColor="var(--forecast-black)";
+            document.getElementById('fave-menu').style.backgroundColor="var(--forecast-black)";
+            document.getElementById('l1').style.backgroundColor="white";
+            document.getElementById('l2').style.backgroundColor="white";
+            document.getElementById('l3').style.backgroundColor="white";
+            document.querySelector(':root').style.setProperty('--fontColor',"white");
         }
         else {
             document.querySelector('input').classList.add("input-color-black");
@@ -92,6 +113,11 @@
             document.getElementById('week-forecast').style.backgroundColor="var(--forecast-white)";
             document.getElementById('day-info').style.backgroundColor="var(--forecast-white)";
             document.getElementById('general-info').style.backgroundColor="var(--forecast-white)";
+            document.getElementById('fave-menu').style.backgroundColor="var(--forecast-white)";
+            document.getElementById('l1').style.backgroundColor="black";
+            document.getElementById('l2').style.backgroundColor="black";
+            document.getElementById('l3').style.backgroundColor="black";
+            document.querySelector(':root').style.setProperty('--fontColor',"black");
         }
     }
 
@@ -128,18 +154,18 @@
     function chooseCurrCond(currCond,h){
         if(currCond=="Overcast")
             {   
-                if(h<21&&h>6){
+                if(h<21&&h>=6){
                     document.querySelector('body').classList.add("overcast");
                 }else {
                     document.querySelector('body').classList.add("clear");
                 }
                 document.getElementById('icon').innerHTML = '<img src="./img/overcast.svg" alt="overcast">';
             }else if(currCond=="Sunny"){
-                if(h<18&&h>6)document.querySelector('body').classList.add("sunny");
+                if(h<18&&h>=6)document.querySelector('body').classList.add("sunny");
                 else document.querySelector('body').classList.add("sunset");
                 document.getElementById('icon').innerHTML = '<img src="./img/sun.svg" alt="sunny">';
             }else if(currCond=="Partly cloudy"){
-                if(h<21&&h>6){
+                if(h<21&&h>=6){
                     document.querySelector('body').classList.add("partially_cloudy");
                     document.getElementById('icon').innerHTML = '<img src="./img/partially_cloudy.svg" alt="part_cloudy">';
                 }else {
@@ -147,7 +173,7 @@
                     document.getElementById('icon').innerHTML = '<img src="./img/cloudy_night_2.svg" alt="part_cloudy_night">';
                 }
             }else if(currCond=="Clear"){
-                if(h<21&&h>6){
+                if(h<21&&h>=6){
                     if(h<18&&h>6)document.querySelector('body').classList.add("sunny");
                     else document.querySelector('body').classList.add("sunset");
                     document.getElementById('icon').innerHTML = '<img src="./img/sun.svg" alt="sunny">';
@@ -162,7 +188,7 @@
                 document.querySelector('body').classList.add("heavy_rain");
                 document.getElementById('icon').innerHTML = '<img src="./img/heavy_rain.svg" alt="heavy_rain">';
             }else if(currCond=="Mist"){
-                if(h<21&&h>6){
+                if(h<21&&h>=6){
                     document.querySelector('body').classList.add("mist");
                 }
                 else{
@@ -227,8 +253,9 @@
 
             chooseCurrCond(currCond,h);
             setColor(h-1);
-            nameC=data.location.name;
 
+            nameC=data.location.name;
+            setFaveInitial(nameC);
             //console.log(data);
             let name="";
             let hourCounter=0;
@@ -309,6 +336,8 @@
     {
         inp=document.querySelector('input').value;
         //console.log(inp);
+        document.getElementById("fave-menu-icon").style.zIndex="9";
+        document.getElementById("fave-menu").style.left="-100%";
         if(document.querySelector('input').value!="")document.getElementById("recom-list").style.display="flex";
         else document.getElementById("recom-list").style.display="none";
         if(inp!=""){
@@ -334,6 +363,7 @@
     function showCity(cityName,ind)
     {
             nameC=cityName;
+            setFaveInitial(nameC);
             document.querySelector('input').value='';
             document.getElementById("recom-list").style.display="none";
             document.getElementById("recom-list").innerHTML="";
@@ -437,6 +467,7 @@
     {
         document.querySelector('input').value='';
         document.getElementById("recom-list").style.display="none";
+        document.getElementById("fave-menu-icon").style.zIndex="13";
     }
 
     let r;
@@ -453,5 +484,113 @@
             document.getElementById("m"+r).style.opacity="100%";
         }
     },5000);
+
+    function checkCookie(nameC) {
+        let decodedCookie = decodeURIComponent(document.cookie);
+        console.log(decodedCookie);
+        let b = decodedCookie.split('; ');
+        let d1;
+        let ok=0;
+        //console.log(b[1]);
+        for(let i=0;i<b.length;i++) {
+            let b1 = b[i].split("=");
+                //console.log(b1[0]);
+                let a = b1[1];
+                let d = b1[0];
+                console.log(a);
+                if(a==nameC){
+                    //console.log(a[1]);
+                    ok=1;
+                    d1=d;
+                }
+                else if(d1==d){
+                    return 0;
+                }
+        }
+        if(ok==0)return 0;
+        return 1;
+    }
+
+    let nr=1;
+    //console.log(document.cookie);
+    //let decodedCookie = decodeURIComponent(document.cookie);
+    //console.log(decodedCookie);
+    function setFaveInitial(){
+        document.getElementById("fave-cities").innerHTML="";
+        if(checkCookie(nameC)==0){
+            document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
+        }
+        else document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
+        nr=document.cookie.split('city').length;
+        let decodedCookie = decodeURIComponent(document.cookie);
+        console.log(decodedCookie);
+        let b = decodedCookie.split('; ');
+        let d1;
+        let ok=0;
+        //console.log(b[1]);
+        for(let i=0;i<b.length;i++) {
+            let b1 = b[i].split("=");
+                //console.log(b1[0]);
+                let a = b1[1];
+                let d = b1[0];
+                console.log(a);
+                if(a!="0"){
+                    //console.log(a[1]);
+                    document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a+'\','+degree%2+')">'+a+'</p>';
+                }
+                else if(d1==d){
+                    return 0;
+                }
+        }
+        if(ok==0)return 0;
+        return 1;
+    }
+    //document.cookie+=";expires=Tue, 7 Mar 2023 12:00:00 UTC";
+
+    function setFave(){
+        if(checkCookie(nameC)==1){
+            document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
+            let c = "";
+            //console.log(b[1]);
+            let b = document.cookie.split('; ');
+            document.getElementById("fave-cities").innerHTML="";
+            //console.log(b[0]);
+            //document.cookie=";expires=Tue, 7 Mar 2000 12:00:00 UTC";
+            for(let i=0;i<b.length;i++) {
+                let a = b[i].split("=");
+                //console.log(a[0]);
+                //console.log(a[1]);
+                if(a[1]==nameC){
+                    //console.log(a[1]);
+                    document.cookie=a[0]+"="+"0";
+                    //console.log(c);
+                }
+                else{
+                    if(a[1]!="0")document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a[1]+'\','+degree%2+')">'+a[1]+'</p>';
+                }
+            }
+            //c+=";expires=Tue, 7 May 2023 12:00:00 UTC";
+            //console.log(document.cookie);
+            nr++;
+        }
+        else {
+            document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
+            //console.log(nameC);
+            document.cookie="city"+nr+"="+nameC;
+            document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+'\','+degree%2+')">'+nameC+'</p>';
+            nr++;
+        }
+        console.log(document.cookie);
+    }
+
+    function showFaveMenu()
+    {
+        let fm = document.getElementById("fave-menu");
+        if(fm.style.left=="0%"){
+            fm.style.left="-100%";
+        }else {
+            fm.style.left="0%";
+        }
+    }
 </script>
 </html>
