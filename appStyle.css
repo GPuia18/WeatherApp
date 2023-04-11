@@ -128,7 +128,7 @@ body{
     align-items: center;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    width: clamp(300px,30%,500px);
+    width: clamp(300px,30%,400px);
     height: 100vh;
     background-color: rgba(0,0,0,.3);
     left: -100%;
@@ -408,5 +408,11 @@ input:focus{
     .info{
         margin-top: 40px;
         margin-bottom: 30px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .fave-menu{
+        width: 100vw;
     }
 }

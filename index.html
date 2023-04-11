@@ -16,7 +16,7 @@
             <span id="l3"></span>
         </div>
 
-        <div class="fave-menu" id="fave-menu">
+        <div class="fave-menu" id="fave-menu" onclick="closeFaveMenu()">
             <div class="fave-heading"><h2>Favorites</h2></div>
             <div class="fave-citites" id="fave-cities">
 
@@ -512,11 +512,13 @@
         return 1;
     }
 
-    let nr=document.cookie.split('; ').length;
+    let nr=0;
     //console.log(document.cookie);
     //let decodedCookie = decodeURIComponent(document.cookie);
     //console.log(decodedCookie);
     function setFaveInitial(){
+        console.log(document.cookie);
+        console.log(nr);
         document.getElementById("fave-cities").innerHTML="";
         if(checkCookie(nameC)==0){
             document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
@@ -534,12 +536,15 @@
                 let a = b1[1];
                 let d = b1[0];
                 //console.log(a);
+                if(parseInt(d.split("city")[1])>nr)nr=parseInt(d.split("city")[1]);
+                //console.log(d.split("city")[1]);
                 if(a!="0"&&a!=undefined){
                     //console.log(a);
                     document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a+'\','+degree%2+')">'+a+'</p>';
                 }
         }
-        console.log(document.cookie);
+        //console.log(document.cookie);
+        //console.log(nr);
         return 1;
     }
     //document.cookie+=";expires=Tue, 7 Mar 2023 12:00:00 UTC";
@@ -563,19 +568,21 @@
                     //console.log(c);
                 }
                 else{
-                    if(a[1]!="0"&&a[1]!=undefined)document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a[1]+'\','+degree%2+')">'+a[1]+'</p>';
+                    if(a[1]!="0"&&a[1]!=undefined){
+                        document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a[1]+'\','+degree%2+')">'+a[1]+'</p>';
+                    }
                 }
             }
             //c+=";expires=Tue, 7 May 2023 12:00:00 UTC";
             //console.log(document.cookie);
-            nr++;
         }
         else {
             document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
             //console.log(nameC);
-            document.cookie="city"+nr+"="+nameC;
-            document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+'\','+degree%2+')">'+nameC+'</p>';
             nr++;
+            //console.log(nr);
+            document.cookie="city"+nr+"="+nameC+";expires=Tue, 7 May 2023 12:00:00 UTC";
+            document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+'\','+degree%2+')">'+nameC+'</p>';
         }
         console.log(document.cookie);
     }
@@ -587,6 +594,13 @@
             fm.style.left="-100%";
         }else {
             fm.style.left="0%";
+        }
+    }
+
+    function closeFaveMenu()
+    {
+        if(document.getElementById("fave-menu").style.left=="0%"){
+            document.getElementById("fave-menu").style.left="-100%";
         }
     }
 </script>
