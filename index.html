@@ -83,6 +83,8 @@
     let currCond;
     let degree=1;
     let nameC="0";
+    let nameR="";
+    let nameCo="";
     let mindex=0;
 
     //Setare tema day/night in functie de ora locatiei alese/locatiei actuale
@@ -176,7 +178,7 @@
                     document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><g id="partially_cloudy"><circle id="sun" cx="24.791" cy="26.367" fill="#f5ce42" r="14.185"/><path id="cloud" d="M35.272,45.405A12.292,12.292,0,1,0,23.46,29.746a8.582,8.582,0,1,0-4.854,15.659Z" fill="#b9d8e8"/></g></svg>';
                 }else {
                     document.querySelector('body').classList.add("clear");
-                    document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><g><path d="M22.682,14.493A11.429,11.429,0,0,1,8.829,25.674a11.436,11.436,0,1,0,13.539-13.8A11.455,11.455,0,0,1,22.682,14.493Z" fill="#7269af"/><path id="cloud" d="M36.466,45.716A12.291,12.291,0,1,0,24.654,30.057,8.582,8.582,0,1,0,19.8,45.716Z" fill="#b9d8e8"/></g></svg>';
+                    document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><g><path id="moon" d="M22.682,14.493A11.429,11.429,0,0,1,8.829,25.674a11.436,11.436,0,1,0,13.539-13.8A11.455,11.455,0,0,1,22.682,14.493Z" fill="#7269af"/><path id="cloud" d="M36.466,45.716A12.291,12.291,0,1,0,24.654,30.057,8.582,8.582,0,1,0,19.8,45.716Z" fill="#b9d8e8"/></g></svg>';
                 }
             }else if(currCond=="Clear"){
                 if(h<21&&h>=6){
@@ -201,10 +203,10 @@
                     document.querySelector('body').classList.add("mist_night");
                 }
                 document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><g><path id="line1" d="M34.734,25.161h-21" fill="none" stroke="#83b3cb" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/><path id="line2" d="M43.734,18.809h-21" fill="none" stroke="#b6d4e3" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/><path id="line3" d="M43.853,32.128H31.893" fill="none" stroke="#9fa6b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/><path id="line4" d="M34.734,38.778h-21" fill="none" stroke="#615c9a" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/><line id="line5" fill="none" stroke="#9fa6b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" x1="24.252" x2="17.394" y1="32.124" y2="32.124"/></g></svg>';
-            }else if(currCond.includes("rain")==1||currCond.includes("Rain")==1){
+            }else if(currCond.includes("rain")==1||currCond.includes("Rain")==1||currCond.includes("drizzle")==1){
                 document.querySelector('body').classList.add("light_rain");
                 document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><g><path id="cloud2" d="M35.272,38.536A12.291,12.291,0,1,0,23.46,22.877a8.582,8.582,0,1,0-4.854,15.659Z" fill="#b9d8e8"/><path id ="rain" d="M31.419,38.028A24.388,24.388,0,0,0,29.1,35.036a24.344,24.344,0,0,0-2.317,2.992,5.112,5.112,0,0,0-.946,2.342,3.263,3.263,0,0,0,6.526,0A5.1,5.1,0,0,0,31.419,38.028Z" fill="#83b3cb"/></g></svg>';
-            }else if(currCond.includes("snow")==1||currCond.includes("Snow")==1){
+            }else if(currCond.includes("snow")==1||currCond.includes("Snow")==1||currCond.includes("sleet")==1){
                 document.querySelector('body').classList.add("light_rain");
                 document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><path id="cloud2" d="M33.771,35.56A12.292,12.292,0,1,0,21.959,19.9,8.582,8.582,0,1,0,17.106,35.56Z" fill="#b9d8e8"/><circle id="drop1" cx="19.937" cy="34.857" fill="#615c9a" r="2.132"/><circle id="drop2" cx="24.337" cy="43.589" fill="#007a9d" r="2.132"/><circle id="drop3" cx="28.738" cy="34.344" fill="#9fa6b7" r="2.132"/><circle id="drop4" cx="35.752" cy="39.089" fill="#83b3cb" r="2.132"/></svg>';
             }else{
@@ -234,9 +236,9 @@
                 return "<img src='./img/heavy_rain.svg' alt='heavy_rain' class='small-icon'>";
             }else if(currCond=="Mist"){
                 return "<img src='./img/mist.svg' alt='mist' class='small-icon'>";
-            }else if(currCond.includes("rain")==1||currCond.includes("Rain")==1){
+            }else if(currCond.includes("rain")==1||currCond.includes("Rain")==1||currCond.includes("drizzle")==1){
                 return "<img src='./img/light_rain.svg' alt='light_rain' class='small-icon'>";
-            }else if(currCond.includes("snow")==1||currCond.includes("Snow")==1){
+            }else if(currCond.includes("snow")==1||currCond.includes("Snow")==1||currCond.includes("sleet")==1){
                 return "<img src='./img/snow.svg' alt='snow' class='small-icon'>";
             }else{
                 return "<img src='./img/sun.svg' alt='sunny' class='small-icon'>";
@@ -266,8 +268,10 @@
             setColor(h-1);
 
             nameC=data.location.name;
+            nameR=data.location.region;
+            nameCo=data.location.country;
             //console.log(nameC);
-            setFaveInitial(nameC);
+            setFaveInitial();
             //console.log(data);
             let name="";
             let hourCounter=0;
@@ -380,7 +384,7 @@
                 list.innerHTML="";
                 data.forEach(city => {
                     if(city.region){
-                        list.innerHTML = list.innerHTML + '<button class="recom-city" onclick="showCity(\''+city.name+'\','+degree%2+')">'+city.name+", "+city.region+", "+city.country+'</button>';
+                        list.innerHTML = list.innerHTML + '<button class="recom-city" onclick="showCity(\''+city.name+', '+city.region+'\','+degree%2+')">'+city.name+", "+city.region+", "+city.country+'</button>';
                         
                     }
                     else list.innerHTML = list.innerHTML + '<button class="recom-city" onclick="showCity(\''+city.name+'\','+degree%2+')">'+city.name+", "+city.country+'</button>';
@@ -394,8 +398,6 @@
 
     function showCity(cityName,ind)
     {
-            nameC=cityName;
-            setFaveInitial(nameC);
             document.querySelector('input').value='';
             document.getElementById("recom-list").style.display="none";
             document.getElementById("recom-list").innerHTML="";
@@ -405,6 +407,10 @@
             })
             .then(function (data){
             //console.log(data);
+            nameR=data.location.region;
+            nameCo=data.location.country;
+            nameC=data.location.name;
+            setFaveInitial();
             let name="";
             let hourCounter=0;
             if(ind==1)document.getElementById('city').innerHTML="<h1>"+data.current.temp_c+"°C"+"</h1><h2 style='text-align:center;'>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_c+" / "+data.forecast.forecastday[0].day.mintemp_c+"°C"+"</h4>";
@@ -523,35 +529,35 @@
 
     //Verificare daca exista orasul in lista de favorite 
 
-    function checkCookie(nameC) {
-        let decodedCookie = decodeURIComponent(document.cookie);
-        let b = decodedCookie.split('; ');
+    function checkCookie(nameC, nameR, nameCo) {
+        //let decodedCookie = decodeURIComponent(document.cookie);
+        let b = document.cookie.split('; ');
         let d1;
-        let ok=0;
         for(let i=0;i<b.length;i++) {
             let b1 = b[i].split("=");
                 let a = b1[1];
                 let d = b1[0];
-                if(a==nameC){
-                    ok=1;
+                if(a==(nameC+", "+nameR+", "+nameCo)){
+                    console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
+                    return 1;
                     d1=d;
                 }
                 else if(d1==d){
                     return 0;
                 }
         }
-        if(ok==0)return 0;
-        return 1;
+        return 0;
     }
 
     //Afisare lista de orase favorite
 
     let nr=0;
     function setFaveInitial(){
-        console.log(document.cookie);
+        //document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+        //console.log(document.cookie);
         console.log(nr);
         document.getElementById("fave-cities").innerHTML="";
-        if(checkCookie(nameC)==0){
+        if(checkCookie(nameC, nameR, nameCo)==0){
             document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
         }
         else document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
@@ -563,6 +569,7 @@
         for(let i=0;i<b.length;i++) {
             let b1 = b[i].split("=");
                 let a = b1[1];
+                console.log(a);
                 let d = b1[0];
                 if(parseInt(d.split("city")[1])>nr)nr=parseInt(d.split("city")[1]);
                 if(a!="0"&&a!=undefined){
@@ -575,7 +582,7 @@
     //Setare oras favorit folosind cookies
 
     function setFave(){
-        if(checkCookie(nameC)==1){
+        if(checkCookie(nameC, nameR, nameCo)==1){
             document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
             let c = "";
             //console.log(b[1]);
@@ -583,7 +590,23 @@
             document.getElementById("fave-cities").innerHTML="";
             for(let i=0;i<b.length;i++) {
                 let a = b[i].split("=");
-                if(a[1]==nameC){
+                //console.log(a[1].split(", ")[0]);
+                if(a[1].split(', ').length>3){
+                    for(let j=1;j<a[1].split(', ').length-1;j++)
+                    {
+                        if(c==""){
+                            c+=a[1].split(', ')[j];
+                        }
+                        else {
+                            c+=", "+a[1].split(', ')[j];
+                        }
+                    }
+                }
+                else {
+                    c=a[1].split(', ')[1];
+                }
+                //console.log(c);
+                if(a[1].split(", ")[0]==nameC&&c==nameR){
                     document.cookie=a[0]+"="+"0";
                 }
                 else{
@@ -596,8 +619,8 @@
         else {
             document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
             nr++;
-            document.cookie="city"+nr+"="+nameC+";expires=Tue, 7 May 2023 12:00:00 UTC";
-            document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+'\','+degree%2+')">'+nameC+'</p>';
+            document.cookie="city"+nr+"="+nameC+", "+nameR+", "+nameCo+";expires=Tue, 7 May 2023 12:00:00 UTC";
+            document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+', '+nameR+', '+nameCo+'\','+degree%2+')">'+nameC+', '+nameR+', '+nameCo+'</p>';
         }
         //console.log(document.cookie);
     }
