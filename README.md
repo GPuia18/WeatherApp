@@ -1,1 +1,1 @@
-#Weathery - Weather App
+# Weathery - Weather App
