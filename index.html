@@ -8,8 +8,6 @@
     <title>Weathery</title>
 </head>
 <body>
-    <!--<button onclick="getCurrent()">Get coord</button>-->
-
         <div class="fave-menu-icon" id="fave-menu-icon" onclick="showFaveMenu()">
             <span id="l1"></span>
             <span id="l2"></span>
@@ -87,6 +85,8 @@
     let nameC="0";
     let mindex=0;
 
+    //Setare tema day/night in functie de ora locatiei alese/locatiei actuale
+
     function setColor(localHour)
     {
         document.querySelector('input').className='';
@@ -121,6 +121,8 @@
         }
     }
 
+    //Setam locatia actuala a user-ului. Daca locatia nu este activata (nu avem drept de localizare) se va folosi locatia default: Londra
+
     function getLocation()
     {
         if (navigator.geolocation)
@@ -139,6 +141,8 @@
         }
     }
 
+    //Toggle intre grade Celsius si Fahrenheit
+
     function changeDegrees()
     {
         degree++;
@@ -150,6 +154,8 @@
             setTimeout(showCity(nameC,2),300);
         }
     }
+
+    //Setare tema vizuala pentru locatia actuala/default in functie de starea vremii si ora
 
     function chooseCurrCond(currCond,h){
         if(currCond=="Overcast")
@@ -207,6 +213,8 @@
             }
     }
 
+    //Setare imaginilor pentru furnizarea vremii in urmatoarele 24h
+
     function getCondHour(currCond,h)
     {
         if(currCond=="Overcast")
@@ -236,6 +244,9 @@
     }
 
     getLocation();
+
+    //Furnizare informatii pentru locatia utilizatorului/default folosind Weather API
+
     setTimeout(getCurrWeather,500);
     function getCurrWeather(){
         fetch("https://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+lat+","+long+"&days=6&aqi=no&alerts=no")
@@ -260,9 +271,15 @@
             //console.log(data);
             let name="";
             let hourCounter=0;
+
+            //Setare nume oras vizionat si temperatura actuala + max si min
+
             document.getElementById('city').innerHTML="<h1>"+data.current.temp_c+"°C"+"</h1><h2 style='text-align:center;'>"+data.location.name+"</h2><h4>"+data.forecast.forecastday[0].day.maxtemp_c+" / "+data.forecast.forecastday[0].day.mintemp_c+"°C"+"</h4>";
             let fo;
             let id=1;
+
+            //Starea vremii in urmatoarele 24h
+
             let fd = document.getElementById("hour-forecast"); 
             for(let i=1;i<=6;i++)
             {
@@ -286,6 +303,8 @@
 
             const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
             fo=data.forecast;
+
+            //Mesaj custom referitor la vreme
 
             let raining = parseInt(fo.forecastday[0].day.daily_chance_of_rain);
             let snowing = parseInt(fo.forecastday[0].day.daily_chance_of_snow);
@@ -311,15 +330,22 @@
             else if(mindex==0){
                 document.getElementById("general-info").innerHTML+="<p id='m"+mindex+"' style='opacity: 100%'>Today is a nice day. Going for a walk would be ideal.</p>";
             }
+
+            //Detalii referitoare la umiditate, viteza actuala a vantului si indexul UV
+
             document.getElementById('hum').innerHTML=fo.forecastday[0].day.avghumidity+"%";
             document.getElementById('win').innerHTML=data.current.wind_kph+"km/h";
             document.getElementById('u').innerHTML=uvi;
+
+            //Culoare custom in functie de nivelul indexului UV
 
             if(uvi<=2)document.getElementById('u').style="border-bottom:2px solid rgba(0,255,0,.5);";
             else if(uvi<=5)document.getElementById('u').style="border-bottom:2px solid rgba(255,255,0,.9);";
             else if(uvi<=7)document.getElementById('u').style="border-bottom:2px solid rgba(255,205,0,.9);";
             else if(uvi<=10)document.getElementById('u').style="border-bottom:2px solid rgba(255,0,0,.7);";
             else document.getElementById('u').style="border-bottom:2px solid rgba(255,0,255,.5);";
+
+            //Starea vremii pentru urmatoarele 5 zile
 
             for(let i=1;i<=5;i++)
             {
@@ -333,6 +359,8 @@
         
     }
     
+    //Recomnadari de locatii in functie de input utilizator
+
     function getRecom()
     {
         inp=document.querySelector('input').value;
@@ -360,6 +388,9 @@
             })
         }
     }
+
+    //Afisarea datelor referitoare la vremea din locatiile alese, folosind input-ul sau numele orasele adaugate la favorite
+    //Parametrul 'ind' ne indica sistemul de masura pentru grade/viteza ales
 
     function showCity(cityName,ind)
     {
@@ -464,12 +495,16 @@
             })
     }
 
+    //Functie pentru iesirea din starea de input
+
     function loseFocus()
     {
         document.querySelector('input').value='';
         document.getElementById("recom-list").style.display="none";
         document.getElementById("fave-menu-icon").style.zIndex="13";
     }
+
+    //Schimbare automata a mesajului referitor la starea vremii, in cazul in care exista mai multe mesaje
 
     let r;
     setInterval(function changeMessages(){
@@ -485,6 +520,8 @@
             document.getElementById("m"+r).style.opacity="100%";
         }
     },5000);
+
+    //Verificare daca exista orasul in lista de favorite 
 
     function checkCookie(nameC) {
         let decodedCookie = decodeURIComponent(document.cookie);
@@ -506,6 +543,8 @@
         if(ok==0)return 0;
         return 1;
     }
+
+    //Afisare lista de orase favorite
 
     let nr=0;
     function setFaveInitial(){
@@ -532,6 +571,8 @@
         }
         return 1;
     }
+
+    //Setare oras favorit folosind cookies
 
     function setFave(){
         if(checkCookie(nameC)==1){
@@ -561,6 +602,8 @@
         //console.log(document.cookie);
     }
 
+    //Afisare meniu de orase favorite
+
     function showFaveMenu()
     {
         let fm = document.getElementById("fave-menu");
@@ -570,6 +613,8 @@
             fm.style.left="0%";
         }
     }
+
+    //Inchidere meniu de orase favorite
 
     function closeFaveMenu()
     {
