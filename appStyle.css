@@ -307,7 +307,7 @@ input:focus{
     width: 40px;
 }
 
-.icon img{
+.icon svg{
     height: clamp(200px, 40% ,300px);
     width: clamp(200px, 40% ,300px);
 }
@@ -414,5 +414,197 @@ input:focus{
 @media only screen and (max-width: 400px) {
     .fave-menu{
         width: 100vw;
+    }
+}
+
+#sun{
+    animation: 10s sun linear infinite;
+}
+
+@keyframes sun{
+    0%{
+        filter: drop-shadow(0px 0px 0px orange);
+        -webkit-filter: drop-shadow(0px 0px 0px orange);
+    }
+    25%{
+        filter: drop-shadow(0px 0px 3px orange);
+        -webkit-filter: drop-shadow(0px 0px 3px orange);
+    }
+    50%, 100%{
+        filter: drop-shadow(0px 0px 0px orange);
+        -webkit-filter: drop-shadow(0px 0px 0px orange);
+    }
+}
+
+#line1{
+    animation: 7s linea linear infinite;
+    animation-delay: 2s;
+}
+
+#line2{
+    animation: 6s linea linear infinite;
+    animation-delay: 2s;
+}
+
+#line3{
+    animation: 10s linea linear infinite;
+    animation-delay: 2s;
+}
+
+#line4{
+    animation: 9s linea linear infinite;
+    animation-delay: 2s;
+}
+
+#line5{
+    
+    animation: 8s linea linear infinite;
+    animation-delay: 2s;
+}
+
+@keyframes linea{
+    0%{
+        transform: translateX(0px);
+        opacity: 100%;
+    }
+    15%{
+        transform: translateX(-2px);
+        opacity: 80%;
+    }
+    30%{
+        opacity: 60%;
+        transform: translateX(-5px);
+    }
+    45%{
+        opacity: 30%;
+        transform: translateX(-2px);
+    }
+    60%, 100%{
+        opacity: 100%;
+        transform: translateX(0px);
+    }
+}
+
+#drop1{
+    animation: 6s drop linear infinite;
+}
+
+#drop2{
+    animation: 5s drop linear infinite;
+}
+
+#drop3{
+    animation: 4s drop linear infinite;
+}
+
+#drop4{
+    animation: 7s drop linear infinite;
+}
+
+#rain{
+    animation: 9s drop linear infinite;
+}
+
+@keyframes drop{
+    0%{
+        transform: translateY(-2px);
+        opacity: 0%;
+    }
+    25%{
+        transform: translateY(0px);
+        opacity: 40%;
+    }
+    50%{
+        opacity: 60%;
+        transform: translateY(5px);
+    }
+    100%{
+        opacity: 0%;
+        transform: translateY(10px);
+    }
+}
+
+#moon{
+    animation: 10s moon linear infinite;
+    transform-origin: center;
+}
+
+@keyframes moon{
+    0%{
+        transform: rotate(5deg);
+    }
+    25%{
+        transform: rotate(-10deg);
+    }
+    50%{
+        transform: rotate(10deg);
+    }
+    75%{
+        transform: rotate(5deg);
+    }
+    100%{
+        transform: rotate(5deg);
+    }
+}
+
+#cloud{
+    animation: 15s cloud linear infinite;
+}
+
+#cloud2{
+    animation: 15s cloud2 linear infinite;
+}
+
+@keyframes cloud{
+    0%{
+        transform: translateX(3%);
+        opacity: 100%;
+    }
+    20%{
+        transform: translateX(10%);
+        opacity: 0%;
+    }
+    40%{
+        transform: translateX(-14%);;
+        opacity: 0%;
+    }
+    60%{
+        transform: translateX(-10%);
+        opacity: 50%;
+    }
+    80%{
+        transform: translateX(-5%);
+        opacity: 90%;
+    }
+    100%{
+        transform: translateX(3%);
+        opacity: 100%;
+    }
+}
+
+@keyframes cloud2{
+    0%{
+        transform: translateX(0%);
+        opacity: 90%;
+    }
+    20%{
+        transform: translateX(-5%);
+        opacity: 80%;
+    }
+    40%{
+        transform: translateX(-10%);;
+        opacity: 0%;
+    }
+    50%{
+        transform: translateX(7%);
+        opacity: 0%;
+    }
+    80%{
+        transform: translateX(5%);
+        opacity: 70%;
+    }
+    100%{
+        transform: translateX(0%);
+        opacity: 80%;
     }
 }
