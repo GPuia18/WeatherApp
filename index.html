@@ -289,7 +289,7 @@
 
             let raining = parseInt(fo.forecastday[0].day.daily_chance_of_rain);
             let snowing = parseInt(fo.forecastday[0].day.daily_chance_of_snow);
-            console.log(raining);
+            //console.log(raining);
             let uvi = fo.forecastday[0].day.uv;
             document.getElementById("general-info").innerHTML="";
             if(raining>=40){
@@ -488,19 +488,14 @@
 
     function checkCookie(nameC) {
         let decodedCookie = decodeURIComponent(document.cookie);
-        //console.log(decodedCookie);
         let b = decodedCookie.split('; ');
         let d1;
         let ok=0;
-        //console.log(b[1]);
         for(let i=0;i<b.length;i++) {
             let b1 = b[i].split("=");
-                //console.log(b1[0]);
                 let a = b1[1];
                 let d = b1[0];
-                //console.log(a);
                 if(a==nameC){
-                    //console.log(a[1]);
                     ok=1;
                     d1=d;
                 }
@@ -513,9 +508,6 @@
     }
 
     let nr=0;
-    //console.log(document.cookie);
-    //let decodedCookie = decodeURIComponent(document.cookie);
-    //console.log(decodedCookie);
     function setFaveInitial(){
         console.log(document.cookie);
         console.log(nr);
@@ -529,25 +521,17 @@
         let b = decodedCookie.split('; ');
         let d1;
         let ok=0;
-        //console.log(b[1]);
         for(let i=0;i<b.length;i++) {
             let b1 = b[i].split("=");
-                //console.log(b1[0]);
                 let a = b1[1];
                 let d = b1[0];
-                //console.log(a);
                 if(parseInt(d.split("city")[1])>nr)nr=parseInt(d.split("city")[1]);
-                //console.log(d.split("city")[1]);
                 if(a!="0"&&a!=undefined){
-                    //console.log(a);
                     document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a+'\','+degree%2+')">'+a+'</p>';
                 }
         }
-        //console.log(document.cookie);
-        //console.log(nr);
         return 1;
     }
-    //document.cookie+=";expires=Tue, 7 Mar 2023 12:00:00 UTC";
 
     function setFave(){
         if(checkCookie(nameC)==1){
@@ -556,16 +540,10 @@
             //console.log(b[1]);
             let b = document.cookie.split('; ');
             document.getElementById("fave-cities").innerHTML="";
-            //console.log(b[0]);
-            //document.cookie=";expires=Tue, 7 Mar 2000 12:00:00 UTC";
             for(let i=0;i<b.length;i++) {
                 let a = b[i].split("=");
-                //console.log(a[0]);
-                //console.log(a[1]);
                 if(a[1]==nameC){
-                    //console.log(a[1]);
                     document.cookie=a[0]+"="+"0";
-                    //console.log(c);
                 }
                 else{
                     if(a[1]!="0"&&a[1]!=undefined){
@@ -573,18 +551,14 @@
                     }
                 }
             }
-            //c+=";expires=Tue, 7 May 2023 12:00:00 UTC";
-            //console.log(document.cookie);
         }
         else {
             document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
-            //console.log(nameC);
             nr++;
-            //console.log(nr);
             document.cookie="city"+nr+"="+nameC+";expires=Tue, 7 May 2023 12:00:00 UTC";
             document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+'\','+degree%2+')">'+nameC+'</p>';
         }
-        console.log(document.cookie);
+        //console.log(document.cookie);
     }
 
     function showFaveMenu()
