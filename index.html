@@ -150,10 +150,10 @@
         degree++;
         if(degree%2==1){
             document.getElementById("toggle").innerHTML="°F";
-            setTimeout(showCity(nameC,1),300);
+            setTimeout(showCity(nameC+', '+nameR+', '+nameCo,1),300);
         }else{
             document.getElementById("toggle").innerHTML="°C";
-            setTimeout(showCity(nameC,2),300);
+            setTimeout(showCity(nameC+', '+nameR+', '+nameCo,2),300);
         }
     }
 
