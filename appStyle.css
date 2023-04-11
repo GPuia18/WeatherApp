@@ -549,11 +549,11 @@ input:focus{
 }
 
 #cloud{
-    animation: 10s cloud linear infinite;
+    animation: 12s cloud linear infinite;
 }
 
 #cloud2{
-    animation: 10s cloud2 linear infinite;
+    animation: 12s cloud2 linear infinite;
 }
 
 @keyframes cloud{

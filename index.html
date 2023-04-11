@@ -538,7 +538,7 @@
                 let a = b1[1];
                 let d = b1[0];
                 if(a==(nameC+", "+nameR+", "+nameCo)){
-                    console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
+                    //console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
                     return 1;
                     d1=d;
                 }
@@ -555,21 +555,21 @@
     function setFaveInitial(){
         //document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
         //console.log(document.cookie);
-        console.log(nr);
+        //console.log(nr);
         document.getElementById("fave-cities").innerHTML="";
         if(checkCookie(nameC, nameR, nameCo)==0){
             document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
         }
         else document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
         let decodedCookie = decodeURIComponent(document.cookie);
-        console.log(decodedCookie);
+        //console.log(decodedCookie);
         let b = decodedCookie.split('; ');
         let d1;
         let ok=0;
         for(let i=0;i<b.length;i++) {
             let b1 = b[i].split("=");
                 let a = b1[1];
-                console.log(a);
+                //console.log(a);
                 let d = b1[0];
                 if(parseInt(d.split("city")[1])>nr)nr=parseInt(d.split("city")[1]);
                 if(a!="0"&&a!=undefined){
@@ -589,6 +589,7 @@
             let b = document.cookie.split('; ');
             document.getElementById("fave-cities").innerHTML="";
             for(let i=0;i<b.length;i++) {
+                c="";
                 let a = b[i].split("=");
                 //console.log(a[1].split(", ")[0]);
                 if(a[1].split(', ').length>3){
@@ -605,7 +606,7 @@
                 else {
                     c=a[1].split(', ')[1];
                 }
-                //console.log(c);
+                //console.log(c +" "+ nameR);
                 if(a[1].split(", ")[0]==nameC&&c==nameR){
                     document.cookie=a[0]+"="+"0";
                 }
