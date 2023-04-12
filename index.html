@@ -537,12 +537,20 @@
             let b1 = b[i].split("=");
                 let a = b1[1];
                 let d = b1[0];
-                if(a==(nameC+", "+nameR+", "+nameCo)){
-                    //console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
-                    return 1;
-                    d1=d;
+                if(nameR!=""){
+                    if(a==(nameC+", "+nameR+", "+nameCo)){
+                        //console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
+                        return 1;
+                        d1=d;
+                    }
+                } else {
+                    if(a==(nameC+", "+nameCo)){
+                        //console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
+                        return 1;
+                        d1=d;
+                    }
                 }
-                else if(d1==d){
+                if(d1==d){
                     return 0;
                 }
         }
@@ -620,8 +628,14 @@
         else {
             document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
             nr++;
-            document.cookie="city"+nr+"="+nameC+", "+nameR+", "+nameCo+";expires=Tue, 7 May 2023 12:00:00 UTC";
-            document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+', '+nameR+', '+nameCo+'\','+degree%2+')">'+nameC+', '+nameR+', '+nameCo+'</p>';
+            if(nameR!=""){
+                document.cookie="city"+nr+"="+nameC+", "+nameR+", "+nameCo+";expires=Tue, 7 May 2023 12:00:00 UTC";
+                document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+', '+nameR+', '+nameCo+'\','+degree%2+')">'+nameC+', '+nameR+', '+nameCo+'</p>';
+            }
+            else {
+                document.cookie="city"+nr+"="+nameC+", "+nameCo+";expires=Tue, 7 May 2023 12:00:00 UTC";
+                document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+', '+nameCo+'\','+degree%2+')">'+nameC+', '+nameR+', '+nameCo+'</p>';
+            }
         }
         //console.log(document.cookie);
     }
