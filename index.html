@@ -210,8 +210,14 @@
                 document.querySelector('body').classList.add("light_rain");
                 document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><path id="cloud2" d="M33.771,35.56A12.292,12.292,0,1,0,21.959,19.9,8.582,8.582,0,1,0,17.106,35.56Z" fill="#b9d8e8"/><circle id="drop1" cx="19.937" cy="34.857" fill="#615c9a" r="2.132"/><circle id="drop2" cx="24.337" cy="43.589" fill="#007a9d" r="2.132"/><circle id="drop3" cx="28.738" cy="34.344" fill="#9fa6b7" r="2.132"/><circle id="drop4" cx="35.752" cy="39.089" fill="#83b3cb" r="2.132"/></svg>';
             }else{
-                document.querySelector('body').classList.add("sunset");
-                document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><circle id="sun" cx="28.398" cy="28.696" fill="#f5ce42" r="16.948"/></svg>';
+                if(h<21&&h>=6){
+                    document.querySelector('body').classList.add("sunset");
+                    document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><circle id="sun" cx="28.398" cy="28.696" fill="#f5ce42" r="16.948"/></svg>';
+                }
+                else{
+                    document.querySelector('body').classList.add("clear");
+                    document.getElementById('icon').innerHTML = '<?xml version="1.0" ?><svg height="20.315mm" viewBox="0 0 57.587 57.587" width="20.315mm" xmlns="http://www.w3.org/2000/svg"><title/><path id="moon" d="M41.446,32.535A16.647,16.647,0,0,1,25.163,12.361a16.655,16.655,0,1,0,20.1,19.717A16.7,16.7,0,0,1,41.446,32.535Z" fill="#7269af"/></svg>';
+                }
             }
     }
 
@@ -241,7 +247,11 @@
             }else if(currCond.includes("snow")==1||currCond.includes("Snow")==1||currCond.includes("sleet")==1){
                 return "<img src='./img/snow.svg' alt='snow' class='small-icon'>";
             }else{
-                return "<img src='./img/sun.svg' alt='sunny' class='small-icon'>";
+                if(h<21&&h>=6){
+                    return "<img src='./img/sun.svg' alt='sunny' class='small-icon'>";
+                } else {
+                    return "<img src='./img/moon2.svg' alt='moon' class='small-icon'>";
+                }
             }
     }
 
@@ -636,11 +646,11 @@
             document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
             nr++;
             if(nameR!=""){
-                document.cookie="city"+nr+"="+nameC+", "+nameR+", "+nameCo+";expires=Tue, 7 May 2023 12:00:00 UTC";
+                document.cookie="city"+nr+"="+nameC+", "+nameR+", "+nameCo+";expires=Tue, 7 May 2024 12:00:00 UTC";
                 document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+', '+nameR+', '+nameCo+'\','+degree%2+')">'+nameC+', '+nameR+', '+nameCo+'</p>';
             }
             else {
-                document.cookie="city"+nr+"="+nameC+", "+nameCo+";expires=Tue, 7 May 2023 12:00:00 UTC";
+                document.cookie="city"+nr+"="+nameC+", "+nameCo+";expires=Tue, 7 May 2024 12:00:00 UTC";
                 document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+', '+nameCo+'\','+degree%2+')">'+nameC+', '+nameCo+'</p>';
             }
         }
