@@ -259,9 +259,9 @@
 
     //Furnizare informatii pentru locatia utilizatorului/default folosind Weather API
 
-    setTimeout(getCurrWeather,500);
+    setTimeout(getCurrWeather,1000);
     function getCurrWeather(){
-        fetch("https://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+lat+","+long+"&days=6&aqi=no&alerts=no")
+        fetch("https://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+lat+","+long+"&days=3&aqi=no&alerts=no")
         .then(function (response){
             return response.json();
         })
@@ -361,7 +361,7 @@
 
             //Starea vremii pentru urmatoarele 5 zile
 
-            for(let i=1;i<=5;i++)
+            for(let i=1;i<=2;i++)
             {
                 let date = new Date(fo.forecastday[i].date);
                 let day = date.getDay();
@@ -411,7 +411,7 @@
             document.querySelector('input').value='';
             document.getElementById("recom-list").style.display="none";
             document.getElementById("recom-list").innerHTML="";
-            fetch("https://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+cityName+"&days=6&aqi=no&alerts=no")
+            fetch("https://api.weatherapi.com/v1/forecast.json?key=d3d2af912cd24616b68200305230704&q="+cityName+"&days=3&aqi=no&alerts=no")
             .then(function (response){
                 return response.json();
             })
@@ -500,7 +500,7 @@
             else document.getElementById('u').style="border-bottom:2px solid rgba(255,0,255,.5);";
 
             document.getElementById('week-forecast').innerHTML='';
-            for(let i=1;i<=5;i++)
+            for(let i=1;i<=2;i++)
             {
                 let date = new Date(fo.forecastday[i].date);
                 let day = date.getDay();
@@ -541,20 +541,32 @@
 
     function checkCookie(nameC, nameR, nameCo) {
         //let decodedCookie = decodeURIComponent(document.cookie);
-        let b = document.cookie.split('; ');
+        console.log(nameC);
+        console.log(nameR);
+        console.log(nameCo);
+        let b = document.cookie.split("; ");
         let d1;
         for(let i=0;i<b.length;i++) {
             let b1 = b[i].split("=");
                 let a = b1[1];
                 let d = b1[0];
+                console.log(a);
                 if(nameR!=""){
-                    if(a==(nameC+", "+nameR+", "+nameCo)){
+                    let n1 = nameR.split(', ');
+                    if(n1.length>1){
+                        nameR="";
+                        for(let j=0;j<n1.length-1;j++){
+                            nameR+=n1[j]+",";
+                        }
+                        nameR+=n1[n1.length-1];
+                    }
+                    if(a==(nameC+", "+nameR+", "+nameCo)||a==(nameC+","+nameR+","+nameCo)){
                         //console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
                         return 1;
                         d1=d;
                     }
                 } else {
-                    if(a==(nameC+", "+nameCo)){
+                    if(a==(nameC+", "+nameCo)||a==(nameC+","+nameCo)){
                         //console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
                         return 1;
                         d1=d;
@@ -572,7 +584,7 @@
     let nr=0;
     function setFaveInitial(){
         //document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-        //console.log(document.cookie);
+        console.log(document.cookie);
         //console.log(nr);
         document.getElementById("fave-cities").innerHTML="";
         if(checkCookie(nameC, nameR, nameCo)==0){
@@ -581,7 +593,7 @@
         else document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
         let decodedCookie = decodeURIComponent(document.cookie);
         //console.log(decodedCookie);
-        let b = decodedCookie.split('; ');
+        let b = decodedCookie.split("; ");
         let d1;
         let ok=0;
         for(let i=0;i<b.length;i++) {
@@ -591,7 +603,14 @@
                 let d = b1[0];
                 if(parseInt(d.split("city")[1])>nr)nr=parseInt(d.split("city")[1]);
                 if(a!="0"&&a!=undefined){
-                    document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a+'\','+degree%2+')">'+a+'</p>';
+                    let b1 = a.split(",");
+                    let a1="";
+                    for(let j=0;j<b1.length-1;j++){
+                        b1[j]=b1[j]+", ";
+                        a1=a1+b1[j];
+                    }
+                    a1=a1+b1[b1.length-1];
+                    document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+a+'\','+degree%2+')">'+a1+'</p>';
                 }
         }
         return 1;
@@ -599,37 +618,48 @@
 
     //Setare oras favorit folosind cookies
 
+    function deleteAllCookies() {
+        const cookies = document.cookie.split(";");
+
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i];
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
+    }
+
     function setFave(){
         if(checkCookie(nameC, nameR, nameCo)==1){
             document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
             let c = "";
             let co = "";
             //console.log(b[1]);
-            let b = document.cookie.split('; ');
+            let b = document.cookie.split("; ");
             document.getElementById("fave-cities").innerHTML="";
             for(let i=0;i<b.length;i++) {
                 c="";
                 co="";
                 let a = b[i].split("=");
                 //console.log(a[1].split(", ")[0]);
-                if(a[1].split(', ').length>3){
-                    for(let j=1;j<a[1].split(', ').length-1;j++)
+                if(a[1].split(", ").length>3){
+                    for(let j=1;j<a[1].split(", ").length-1;j++)
                     {
                         if(c==""){
-                            c+=a[1].split(', ')[j];
+                            c+=a[1].split(", ")[j];
                         }
                         else {
-                            c+=", "+a[1].split(', ')[j];
+                            c+=", "+a[1].split(", ")[j];
                         }
                     }
-                    co=a[1].split(', ')[a[1].split(', ').length-1];
+                    co=a[1].split(", ")[a[1].split(", ").length-1];
                 }
-                else if(a[1].split(', ').length==3){
-                    c=a[1].split(', ')[1];
-                    co=a[1].split(', ')[2];
+                else if(a[1].split(", ").length==3){
+                    c=a[1].split(", ")[1];
+                    co=a[1].split(", ")[2];
                 }
                 else {
-                    co=a[1].split(', ')[1];
+                    co=a[1].split(", ")[1];
                 }
                 //console.log(c +" "+ nameR);
                 if(a[1].split(", ")[0]==nameC&&c==nameR&&co==nameCo){
@@ -646,11 +676,11 @@
             document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
             nr++;
             if(nameR!=""){
-                document.cookie="city"+nr+"="+nameC+", "+nameR+", "+nameCo+";expires=Tue, 7 May 2024 12:00:00 UTC";
+                document.cookie="city"+nr+"="+nameC+","+" "+nameR+","+" "+nameCo+";expires=Tue, 7 May 2024 12:00:00 UTC";
                 document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+', '+nameR+', '+nameCo+'\','+degree%2+')">'+nameC+', '+nameR+', '+nameCo+'</p>';
             }
             else {
-                document.cookie="city"+nr+"="+nameC+", "+nameCo+";expires=Tue, 7 May 2024 12:00:00 UTC";
+                document.cookie="city"+nr+"="+nameC+","+" "+nameCo+";expires=Tue, 7 May 2024 12:00:00 UTC";
                 document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+', '+nameCo+'\','+degree%2+')">'+nameC+', '+nameCo+'</p>';
             }
         }
