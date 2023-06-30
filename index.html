@@ -540,7 +540,6 @@
     //Verificare daca exista orasul in lista de favorite 
 
     function checkCookie(nameC, nameR, nameCo) {
-        //let decodedCookie = decodeURIComponent(document.cookie);
         console.log(nameC);
         console.log(nameR);
         console.log(nameCo);
@@ -561,13 +560,11 @@
                         nameR+=n1[n1.length-1];
                     }
                     if(a==(nameC+", "+nameR+", "+nameCo)||a==(nameC+","+nameR+","+nameCo)){
-                        //console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
                         return 1;
                         d1=d;
                     }
                 } else {
                     if(a==(nameC+", "+nameCo)||a==(nameC+","+nameCo)){
-                        //console.log("A: "+a+" loc: "+nameC+", "+nameR+", "+nameCo);
                         return 1;
                         d1=d;
                     }
@@ -583,23 +580,18 @@
 
     let nr=0;
     function setFaveInitial(){
-        //document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-        console.log(document.cookie);
-        //console.log(nr);
         document.getElementById("fave-cities").innerHTML="";
         if(checkCookie(nameC, nameR, nameCo)==0){
             document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
         }
         else document.getElementById("fave").innerHTML="<img src=./img/star_full.png alt='star_full'>";
         let decodedCookie = decodeURIComponent(document.cookie);
-        //console.log(decodedCookie);
         let b = decodedCookie.split("; ");
         let d1;
         let ok=0;
         for(let i=0;i<b.length;i++) {
             let b1 = b[i].split("=");
                 let a = b1[1];
-                //console.log(a);
                 let d = b1[0];
                 if(parseInt(d.split("city")[1])>nr)nr=parseInt(d.split("city")[1]);
                 if(a!="0"&&a!=undefined){
@@ -616,8 +608,6 @@
         return 1;
     }
 
-    //Setare oras favorit folosind cookies
-
     function deleteAllCookies() {
         const cookies = document.cookie.split(";");
 
@@ -629,19 +619,19 @@
         }
     }
 
+    //Setare oras favorit folosind cookies
+
     function setFave(){
         if(checkCookie(nameC, nameR, nameCo)==1){
             document.getElementById("fave").innerHTML="<img src=./img/star_empty.png alt='star_empty'>";
             let c = "";
             let co = "";
-            //console.log(b[1]);
             let b = document.cookie.split("; ");
             document.getElementById("fave-cities").innerHTML="";
             for(let i=0;i<b.length;i++) {
                 c="";
                 co="";
                 let a = b[i].split("=");
-                //console.log(a[1].split(", ")[0]);
                 if(a[1].split(", ").length>3){
                     for(let j=1;j<a[1].split(", ").length-1;j++)
                     {
@@ -661,7 +651,6 @@
                 else {
                     co=a[1].split(", ")[1];
                 }
-                //console.log(c +" "+ nameR);
                 if(a[1].split(", ")[0]==nameC&&c==nameR&&co==nameCo){
                     document.cookie=a[0]+"="+"0";
                 }
@@ -684,7 +673,6 @@
                 document.getElementById("fave-cities").innerHTML+='<p class="fave-city" onclick="showCity(\''+nameC+', '+nameCo+'\','+degree%2+')">'+nameC+', '+nameCo+'</p>';
             }
         }
-        //console.log(document.cookie);
     }
 
     //Afisare meniu de orase favorite
