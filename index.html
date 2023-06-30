@@ -552,12 +552,24 @@
                 console.log(a);
                 if(nameR!=""){
                     let n1 = nameR.split(', ');
+                    let n2 = nameR.split(', ');
                     if(n1.length>1){
                         nameR="";
                         for(let j=0;j<n1.length-1;j++){
                             nameR+=n1[j]+",";
                         }
                         nameR+=n1[n1.length-1];
+                    }
+                    if(a==(nameC+", "+nameR+", "+nameCo)||a==(nameC+","+nameR+","+nameCo)){
+                        return 1;
+                        d1=d;
+                    }
+                    if(n2.length>1){
+                        nameR="";
+                        for(let j=0;j<n2.length-1;j++){
+                            nameR+=n2[j]+", ";
+                        }
+                        nameR+=n2[n2.length-1];
                     }
                     if(a==(nameC+", "+nameR+", "+nameCo)||a==(nameC+","+nameR+","+nameCo)){
                         return 1;
